@@ -5,6 +5,9 @@ on:
   workflow_dispatch:
 
 env:
+  REF: ${{ github.ref }}
+  AUTHOR: ${{ secrets.RELEASE_USERNAME }}
+  PAT: ${{ secrets.RELEASE_TOKEN }}
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
@@ -63,3 +66,15 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+
+      - name: Trigger Workflow after deployment
+        uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: Ananda-Aropa
+          repo: aaropa_rootfs_installer_stack
+          github_token: ${{ env.PAT }}
+          github_user: ${{ env.AUTHOR }}
+          workflow_file_name: stack.yml
+          ref: main
+          trigger_workflow: true
+          wait_workflow: false
