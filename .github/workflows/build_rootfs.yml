@@ -51,11 +51,11 @@ jobs:
       - name: Set up environment variables
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "DOCKERFILE=Dockerfile.update" >> $GITHUB_ENV
+            DOCKERFILE="Dockerfile.base"
           else
-            # Build from scratch
-            echo "DOCKERFILE=Dockerfile" >> $GITHUB_ENV
+            DOCKERFILE="Dockerfile.update"
           fi
+          mv $DOCKERFILE Dockerfile
 
       - name: Build and push Docker image
         id: push
@@ -67,7 +67,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          dockerfile: ${{ env.DOCKERFILE }}
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2
