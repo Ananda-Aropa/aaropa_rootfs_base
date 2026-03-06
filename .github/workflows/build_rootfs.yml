@@ -47,6 +47,15 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      
+      - name: Set up environment variables
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "DOCKERFILE=Dockerfile.update" >> $GITHUB_ENV
+          else
+            # Build from scratch
+            echo "DOCKERFILE=Dockerfile" >> $GITHUB_ENV
+          fi
 
       - name: Build and push Docker image
         id: push
@@ -58,7 +67,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          target: ${{ github.event_name == 'workflow_dispatch' && 'base' || 'final' }}
+          dockerfile: ${{ env.DOCKERFILE }}
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2

@@ -1,0 +1,9 @@
+FROM devuan/migrated:ceres-slim AS final
+
+COPY template /
+COPY packages /
+
+RUN apt update && apt full-upgrade -y --allow-unauthenticated
+
+# Clean up cache & files
+RUN apt autoclean && rm -rf /var/lib/apt/lists/*
