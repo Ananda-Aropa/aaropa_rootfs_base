@@ -5,5 +5,8 @@ COPY packages /
 
 RUN apt update && apt full-upgrade -y --allow-unauthenticated
 
+# Uninstall unnecessary packages
+RUN apt autoremove --purge -y
+
 # Clean up cache & files
 RUN apt autoclean && rm -rf /var/lib/apt/lists/*
