@@ -3,7 +3,7 @@ FROM devuan/migrated:ceres-slim AS base
 COPY template /
 COPY packages /
 
-RUN apt update && apt upgrade -y --allow-unauthenticated
+RUN apt update && apt full-upgrade -y --allow-unauthenticated
 
 # Install additional apt utils 
 RUN apt install -y --allow-unauthenticated apt-transport-https ca-certificates
@@ -23,7 +23,7 @@ FROM scratch AS final
 COPY --from=base / /
 
 # Update packages
-RUN apt update && apt upgrade -y --allow-unauthenticated
+RUN apt update && apt full-upgrade -y --allow-unauthenticated
 
 # Clean up cache & files
 RUN apt clean && rm -rf /var/lib/apt/lists/*
