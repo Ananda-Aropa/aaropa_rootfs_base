@@ -1,4 +1,4 @@
-FROM devuan/migrated:ceres-slim AS final
+FROM ghcr.io/ananda-aropa/aaropa_rootfs_base:latest AS final
 
 COPY template /
 COPY packages /
