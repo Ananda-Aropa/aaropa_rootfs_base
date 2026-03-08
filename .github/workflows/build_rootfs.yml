@@ -51,9 +51,9 @@ jobs:
       - name: Set up environment variables
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            DOCKERFILE="Dockerfile.base"
-          else
             DOCKERFILE="Dockerfile.update"
+          else
+            DOCKERFILE="Dockerfile.base"
           fi
           mv $DOCKERFILE Dockerfile
 

@@ -4,9 +4,11 @@ COPY template /
 COPY packages /
 
 RUN apt update && apt full-upgrade -y --allow-unauthenticated
+RUN grep -Ev '^#' /pkglist.cfg | xargs apt install -y --no-install-recommends --no-install-suggests --allow-unauthenticated
 
 # Uninstall unnecessary packages
 RUN apt autoremove --purge -y
 
 # Clean up cache & files
 RUN apt autoclean && rm -rf /var/lib/apt/lists/*
+RUN rm /*.cfg
