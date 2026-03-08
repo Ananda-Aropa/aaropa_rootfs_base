@@ -3,8 +3,9 @@ FROM ghcr.io/ananda-aropa/aaropa_rootfs_base:latest AS final
 COPY template /
 COPY packages /
 
-RUN apt update && apt full-upgrade -y --allow-unauthenticated
+RUN apt update
 RUN grep -Ev '^#' /pkglist.cfg | xargs apt install -y --no-install-recommends --no-install-suggests --allow-unauthenticated
+RUN apt full-upgrade -y --allow-unauthenticated
 
 # Uninstall unnecessary packages
 RUN apt autoremove --purge -y
