@@ -1,4 +1,4 @@
-FROM ghcr.io/ananda-aropa/aaropa_rootfs_base@sha256:09ad44a88672ef56ed00ba0c6322d0ad991580f6f2672d357858c942d723e1cb AS final
+FROM ghcr.io/ananda-aropa/aaropa_rootfs_base:latest AS final
 
 COPY template /
 COPY packages /
