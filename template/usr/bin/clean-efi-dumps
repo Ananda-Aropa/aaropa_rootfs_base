@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Clear EFI crash dumps to free up NVRAM space
+
+EFIVARS="/sys/firmware/efi/efivars"
+
+# Check if any dump files exist
+if ls "$EFIVARS"/dump-* 1> /dev/null 2>&1; then
+    echo "Found EFI dump files. Freeing space..."
+
+    # Remove the immutable flag so they can be deleted
+    chattr -i "$EFIVARS"/dump-*
+
+    # Delete the dumps
+    rm -f "$EFIVARS"/dump-*
+
+    echo "EFI dumps cleared successfully."
+else
+    echo "No EFI dump files found. Your NVRAM is clean."
+fi
